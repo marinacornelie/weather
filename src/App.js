@@ -6,27 +6,27 @@ const apiKey = process.env.REACT_APP_WEATHER_API_KEY
 
 class App extends Component {
 
-state = {
+  state = {
     city: '',
     units: 'metric',
     weatherTemp: '',
     mainWeather: '',
     showWeatherInfo: false
-}
+  }
 
-changeUnits = (unitsNew) => {
+  changeUnits = (unitsNew) => {
     this.setState({units: unitsNew})
-}
+  }
 
-currentWeather = () => {
-  axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
+  currentWeather = () => {
+    axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
-    console.log(response.data.main.temp)
-    console.log(response.data.weather[0].main)
-    this.setState({
-      weatherTemp: response.data.main.temp,
-      weatherMain: response.data.weather[0].main,
-      showWeatherInfo: true
+      console.log(response.data.main.temp)
+      console.log(response.data.weather[0].main)
+      this.setState({
+        weatherTemp: response.data.main.temp,
+        weatherMain: response.data.weather[0].main,
+        showWeatherInfo: true
       }) 
     })
   }
