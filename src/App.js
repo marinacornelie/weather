@@ -10,8 +10,7 @@ class App extends Component {
     city: '',
     units: 'metric',
     weatherTemp: '',
-    mainWeather: '',
-    showWeatherInfo: false
+    mainWeather: ''
   }
 
   changeUnits = (unitsNew) => {
@@ -21,13 +20,28 @@ class App extends Component {
   currentWeather = () => {
     axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
-      console.log(response.data.main.temp)
-      console.log(response.data.weather[0].main)
       this.setState({
         weatherTemp: response.data.main.temp,
         weatherMain: response.data.weather[0].main,
-        showWeatherInfo: true
+        showWeatherInfo: true,
+        showCityErrorInfo: false,
+        showErrorInfo: false
       }) 
+    })
+    .catch((error) => {
+        if (error.response.status === 404) {
+          this.setState({
+            showCityErrorInfo: true,
+            showWeatherInfo: false,
+            showErrorInfo: false
+          })
+        } else {
+        this.setState({
+          showErrorInfo: true,
+          showWeatherInfo: false,
+          showCityErrorInfo: false
+        })
+      }
     })
   }
 
@@ -36,6 +50,18 @@ class App extends Component {
       return (
       <div>
         <span>{this.state.weatherTemp}, {this.state.weatherMain}</span>
+      </div>
+      )
+    } else if (this.state.showErrorInfo) {
+      return (
+        <div>
+        <span>Did you forget something to fill in?</span>
+      </div>
+      )
+    } else if (this.state.showCityErrorInfo) {
+      return (
+        <div>
+        <span>Sorry, unknown city!</span>
       </div>
       )
     }
