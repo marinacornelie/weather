@@ -42,7 +42,7 @@ class App extends Component {
     axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
       this.setState({
-        weatherInfo: `${response.data.main.temp}, ${response.data.weather[0].main}`
+        weatherInfo: `It's ${response.data.main.temp} degrees and the weather description is: ${response.data.weather[0].description}`
       }) 
     })
     .catch((error) => {
@@ -62,24 +62,35 @@ class App extends Component {
       this.showError(error);
     })
   }
-  
+
   render() {   
     return (
-      <div>
-        <div>
-          <span>Show me the weather in</span>
-          <input placeholder="city name" onChange={event => this.setState({city: event.target.value})}/>
-          <SelectUnits changeUnits={this.changeUnits}/>
-          <button onClick={this.currentWeather}>Show me the current weather!</button>
-          <button onClick={this.forecastWeather}>Show me the 5 day weather forecast!</button>
+      <div className="container d-flex flex-column">
+        <div className="mt-4">
+          <div className="d-flex m-2">
+            <span className="m-1">Show me the weather in</span>
+            <input placeholder="city name" onChange={event => this.setState({city: event.target.value})}/>
+          </div>
+          <div className="d-flex m-2">
+            <span className="m-1">I prefer</span>
+            <SelectUnits changeUnits={this.changeUnits}/>
+          </div> 
         </div>
-        <div>{this.state.weatherInfo}</div>
-        <ul>
-          {this.state.forecastInfo.map((item) => ( 
-            <li key={item.dt}>{item.dt_txt}, {item.main.temp}, {item.weather[0].main}</li>
-          ))}       
-        </ul>
-        <div>{this.state.errorMessage}</div>
+        <div className="mb-4 m-2">
+          <button className="m-1 btn btn-sm btn-outline-dark" onClick={this.currentWeather}>Show me the current weather!</button>
+          <button className="m-1 btn btn-sm btn-outline-dark" onClick={this.forecastWeather}>Show me the 5 day weather forecast!</button>
+        </div>
+        <div> 
+          <div className="card">{this.state.weatherInfo} {this.state.errorMessage}</div>
+          <ul>
+            {this.state.forecastInfo.map((item) => ( 
+            <li className="card" key={item.dt}>
+              <span className="m-1">Date and time: {item.dt_txt}</span> 
+              <span className="m-1">Degrees: {item.main.temp}, Description: {item.weather[0].description}</span>
+            </li>
+            ))}       
+          </ul>  
+        </div>
       </div>
     )
   }
