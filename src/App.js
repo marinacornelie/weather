@@ -55,11 +55,21 @@ class App extends Component {
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
       this.setState({
-        forecastInfo: response.data.list
+        forecastInfo: this.formatWeather(response.data.list)
       }) 
     })
     .catch((error) => {
       this.showError(error);
+    })
+  }
+
+  formatWeather = (forecastInfo) => {
+    const days = Array.from(Array(32).keys())
+    return days.map((day) => {
+      return forecastInfo.filter((item) => {
+        const date = new Date(item.dt*1000).getDate();
+        return day === date
+      })
     })
   }
 
@@ -82,13 +92,17 @@ class App extends Component {
         </div>
         <div> 
           <div className="card">{this.state.weatherInfo} {this.state.errorMessage}</div>
-          <ul>
-            {this.state.forecastInfo.map((item) => ( 
-            <li className="card" key={item.dt}>
-              <span className="m-1">Date and time: {item.dt_txt}</span> 
-              <span className="m-1">Degrees: {item.main.temp}, Description: {item.weather[0].description}</span>
-            </li>
-            ))}       
+            <ul>
+            {this.state.forecastInfo.map((itemList, index) => ( 
+              <li key={index} className="card">
+                {itemList.map((item) => (
+                  <div key={item.dt}>
+                    <span className="m-1">Date and time: {item.dt_txt}</span> 
+                    <span className="m-1">Degrees: {item.main.temp}, Description: {item.weather[0].description}</span>
+                  </div>
+                ))}    
+              </li> 
+            ))} 
           </ul>  
         </div>
       </div>
