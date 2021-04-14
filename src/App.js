@@ -64,16 +64,19 @@ class App extends Component {
   }
 
   formatWeather = (forecastInfo) => {
-    const days = Array.from(Array(32).keys())
+    const firstItem = new Date (forecastInfo[0].dt*1000).getDate();
+    const lastItem = new Date (forecastInfo[forecastInfo.length-1].dt*1000).getDate();
+    var days = [];
+    for (var i = firstItem; i <= lastItem; i++) {
+        days.push(i);
+    }
     const parsedForecastInfo = days.map((day) => {
       return forecastInfo.filter((item) => {
         const date = new Date(item.dt*1000).getDate();
         return day === date 
       })
     })
-    return parsedForecastInfo.filter((itemList) => {
-      return itemList.length
-    })
+    return parsedForecastInfo
   }
 
   render() {   
