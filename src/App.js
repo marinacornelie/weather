@@ -65,11 +65,14 @@ class App extends Component {
 
   formatWeather = (forecastInfo) => {
     const days = Array.from(Array(32).keys())
-    return days.map((day) => {
+    const parsedForecastInfo = days.map((day) => {
       return forecastInfo.filter((item) => {
         const date = new Date(item.dt*1000).getDate();
-        return day === date
+        return day === date 
       })
+    })
+    return parsedForecastInfo.filter((itemList) => {
+      return itemList.length
     })
   }
 
