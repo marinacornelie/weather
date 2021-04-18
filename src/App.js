@@ -10,7 +10,8 @@ class App extends Component {
     units: 'metric',
     weatherInfo: '',
     forecastInfo: [ ],
-    errorMessage: ''
+    errorMessage: '',
+    timezone: ''
   }
 
   changeUnits = (unitsNew) => {
@@ -55,7 +56,7 @@ class App extends Component {
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
       this.setState({
-        forecastInfo: this.formatWeather(response.data.list)
+        forecastInfo: this.formatWeather(response.data)
       }) 
     })
     .catch((error) => {
@@ -64,21 +65,42 @@ class App extends Component {
   }
 
   formatWeather = (forecastInfo) => {
-    const firstItem = new Date (forecastInfo[0].dt*1000).getDate();
-    const lastItem = new Date (forecastInfo[forecastInfo.length-1].dt*1000).getDate();
+    this.setState({
+      timezone: forecastInfo.city.timezone + new Date().getTimezoneOffset()*60
+    }) 
+    const datalist = forecastInfo.list
+    const firstItem = new Date ((datalist[0].dt + this.state.timezone)*1000).getDate();
+    const lastItem = new Date ((datalist[datalist.length-1].dt + this.state.timezone)*1000).getDate();
     var days = [];
     for (var i = firstItem; i <= lastItem; i++) {
         days.push(i);
     }
     const parsedForecastInfo = days.map((day) => {
-      return forecastInfo.filter((item) => {
-        const date = new Date(item.dt*1000).getDate();
+      return datalist.filter((item) => {
+        const date = new Date((item.dt + this.state.timezone)*1000).getDate();
         return day === date 
       })
     })
     return parsedForecastInfo
   }
 
+  formatDate = (weatherItem) => {
+    var date = new Date((weatherItem.dt + this.state.timezone)*1000);
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+    return day + '-' + month
+  } 
+
+  formatTime = (time) => {
+    var date = new Date((time + this.state.timezone)*1000);
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    
+    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+      return formattedTime
+  }
+ 
   render() {   
     return (
       <div className="container d-flex flex-column">
@@ -100,10 +122,10 @@ class App extends Component {
           <div className="card">{this.state.weatherInfo} {this.state.errorMessage}</div>
             <ul>
             {this.state.forecastInfo.map((itemList, index) => ( 
-              <li key={index} className="card">
+              <li key={index} className="card"> Date: {this.formatDate(itemList[0])}
                 {itemList.map((item) => (
                   <div key={item.dt}>
-                    <span className="m-1">Date and time: {item.dt_txt}</span> 
+                    <span className="m-1">Time: {this.formatTime(item.dt)}</span> 
                     <span className="m-1">Degrees: {item.main.temp}, Description: {item.weather[0].description}</span>
                   </div>
                 ))}    
