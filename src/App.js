@@ -86,9 +86,21 @@ class App extends Component {
 
   formatDate = (weatherItem) => {
     var date = new Date((weatherItem.dt + this.state.timezone)*1000);
+
+    var weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    ]
+    var n = weekday[date.getDay()];
+    
     var month = date.getMonth()+1;
     var day = date.getDate();
-    return day + '-' + month
+    return n + ' ' + day + '-' + month
   } 
 
   formatTime = (time) => {
@@ -121,15 +133,26 @@ class App extends Component {
           <div className="p-3 font-lg">{this.state.weatherInfo} {this.state.errorMessage}</div>
           <div>
             {this.state.forecastInfo.map((itemList, index) => ( 
-              <li key={index} className="card m-3 p-3 fw-bold align-items-center">{this.formatDate(itemList[0])}
+              <div key={index} className="card m-3 p-2 align-items-center font-lg">{this.formatDate(itemList[0])}
+                <table className="table table-borderless mt-2 font-df">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Degrees</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
                 {itemList.map((item) => (
-                  <div className="d-flex font-df m-1 column align-self-baseline" key={item.dt}>
-                    <div>{this.formatTime(item.dt)}</div> 
-                    <div className="ms-3">Degrees: {item.main.temp}</div> 
-                    <div className="ms-3">Weather description: {item.weather[0].description}</div>
-                  </div>
+                  <tbody>
+                    <tr key={item.dt}>
+                      <td>{this.formatTime(item.dt)}</td>
+                      <td>{item.main.temp}</td>
+                      <td>{item.weather[0].description}</td>
+                    </tr>
+                  </tbody>
                 ))}    
-              </li> 
+                </table>
+              </div>
             ))} 
           </div>  
         </div>
