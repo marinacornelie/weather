@@ -2,12 +2,11 @@
 
 body {
   color: black;
-  font-family: 'Archivo', sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 
 input, button, select {
   color: black;
-  font-family: 'DM Sans', sans-serif;
   text-align: center;
 }
 
@@ -15,9 +14,52 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-  outline-color: rgb(0, 0, 39);
+  outline-color: #0d6efdb8;
+}
+
+.form-select {
+  max-width: 140px;
 }
 
 .btn:active:focus, .btn:focus {
-  box-shadow: 0 0 0 0.15rem rgb(33 37 41 / 20%)
+  box-shadow: none;
+}
+
+.bg-color {
+  background-color: #0d6efd0d;
+}
+
+.btn-lg {
+  background-color:#0d6efdb8;
+  border-color: #0d6efdb8;
+  color: white;
+}
+
+.font-lg {
+  font-size: 1.2rem;
+}
+
+.font-df {
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #0d6efdb8;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem #0d6efd2b;
+}
+
+.align-items-center {
+  font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 425px) {
+  input::placeholder {
+  font-size: 0.7rem;
+  }
+  .column {
+    flex-direction: column;
+  }
 }
