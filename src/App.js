@@ -69,12 +69,10 @@ class App extends Component {
       timezone: forecastInfo.city.timezone + new Date().getTimezoneOffset()*60
     }) 
     const datalist = forecastInfo.list
-    const firstItem = new Date ((datalist[0].dt + this.state.timezone)*1000).getDate();
-    const lastItem = new Date ((datalist[datalist.length-1].dt + this.state.timezone)*1000).getDate();
-    var days = [];
-    for (var i = firstItem; i <= lastItem; i++) {
-        days.push(i);
-    }
+    const daylist = datalist.map((item) => {
+      return new Date ((item.dt + this.state.timezone)*1000).getDate();
+    })
+    const days = daylist.filter((v, i, a) => a.indexOf(v) === i);  
     const parsedForecastInfo = days.map((day) => {
       return datalist.filter((item) => {
         const date = new Date((item.dt + this.state.timezone)*1000).getDate();
@@ -86,7 +84,6 @@ class App extends Component {
 
   formatDate = (weatherItem) => {
     var date = new Date((weatherItem.dt + this.state.timezone)*1000);
-
     var weekday = [
     "Sunday",
     "Monday",
@@ -96,8 +93,7 @@ class App extends Component {
     "Friday",
     "Saturday",
     ]
-    var n = weekday[date.getDay()];
-    
+    var n = weekday[date.getDay()];    
     var month = date.getMonth()+1;
     var day = date.getDate();
     return n + ' ' + day + '-' + month
@@ -108,7 +104,6 @@ class App extends Component {
     var hours = date.getHours();
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
-    
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
       return formattedTime
   }
