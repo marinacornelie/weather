@@ -43,7 +43,7 @@ class App extends Component {
     axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
       this.setState({
-        weatherInfo: `Degrees: ${response.data.main.temp} Weather description: ${response.data.weather[0].description}`
+        weatherInfo: response.data
       }) 
     })
     .catch((error) => {
@@ -51,6 +51,20 @@ class App extends Component {
     })
   } 
 
+ showWeather = () => {
+    if (this.state.weatherInfo) {
+      return (
+        <div className="d-flex flex-column bg-white p-2">
+          <div className="m-2">{this.state.weatherInfo.main.temp}°</div>
+          <div className="m-2 d-flex flex-row align-items-center">
+            <div>{this.state.weatherInfo.weather[0].description}</div>
+            <img src={`http://openweathermap.org/img/w/${this.state.weatherInfo.weather[0].icon}.png`} alt="icon weather" />
+          </div>
+        </div>
+      )
+    }   
+  }
+        
   forecastWeather = () => {
     this.resetState();
     axios.get('https://api.openweathermap.org/data/2.5/forecast?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
@@ -107,6 +121,12 @@ class App extends Component {
     var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
       return formattedTime
   }
+  
+  showIcon = (icon) => {
+    return (
+    <img src={`http://openweathermap.org/img/w/${icon}.png`} alt="icon weather" />
+    )
+  }
  
   render() {   
     return (
@@ -125,23 +145,18 @@ class App extends Component {
           <button className="m-2 btn btn-lg" onClick={this.forecastWeather}>5 day weather forecast</button>
         </div>
         <div>   
-          <div className="p-3 font-lg">{this.state.weatherInfo} {this.state.errorMessage}</div>
+          <div className="m-3 p-2 font-lg">{this.showWeather()} {this.state.errorMessage}</div>
           <div>
             {this.state.forecastInfo.map((itemList, index) => ( 
-              <div key={index} className="card m-3 p-2 align-items-center font-lg">{this.formatDate(itemList[0])}
-                <table className="table table-borderless mt-2 font-df">
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>Degrees</th>
-                      <th>Description</th>
-                    </tr>
-                  </thead>
+              <div key={index} className="card m-3">
+                <span className="mt-4 mb-4 font-lg fw-bold">{this.formatDate(itemList[0])}</span>
+                <table className="table table-borderless font-df">
                 {itemList.map((item) => (
                   <tbody>
                     <tr key={item.dt}>
                       <td>{this.formatTime(item.dt)}</td>
-                      <td>{item.main.temp}</td>
+                      <td>{item.main.temp}°</td>
+                      <td className="text-center">{this.showIcon(item.weather[0].icon)}</td>
                       <td>{item.weather[0].description}</td>
                     </tr>
                   </tbody>

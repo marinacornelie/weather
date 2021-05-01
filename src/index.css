@@ -29,6 +29,10 @@ button:focus {
   background-color: #0d6efd0d;
 }
 
+.bg-white {
+  background-color: white;
+}
+
 .btn-lg {
   background-color:#0d6efdb8;
   border-color: #0d6efdb8;
@@ -55,8 +59,25 @@ button:focus {
   margin-bottom: 0;
 }
 
+div.card {
+  padding-left: 3rem;
+}
+
+td {
+  vertical-align: middle;
+  }
+
 @media only screen and (max-width: 425px) {
   input::placeholder {
   font-size: 0.7rem;
+  }
+  table.table {
+    font-size: 0.7rem;
+  }
+  .table>:not(caption)>*>* {
+    padding: .3rem .3rem;
+  }
+  div.card {
+    padding-left: 1.5rem;
   }
 }
