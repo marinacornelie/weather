@@ -156,7 +156,7 @@ class App extends Component {
                     <tr key={item.dt}>
                       <td>{this.formatTime(item.dt)}</td>
                       <td>{item.main.temp}°</td>
-                      <td className="text-center">{this.showIcon(item.weather[0].icon)}</td>
+                      <td>{this.showIcon(item.weather[0].icon)}</td>
                       <td>{item.weather[0].description}</td>
                     </tr>
                   </tbody>
