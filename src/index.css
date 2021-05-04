@@ -18,16 +18,22 @@ input, button, select {
 }
 
 .btn:active:focus, .btn:focus {
+  box-shadow: 0 0 8px #3f8888;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #265858;
   box-shadow: none;
 }
 
 .bg-color {
-  background-color: #0d6efd0d;
+  background-color: #56b5e208;
 }
 
 .btn-lg {
-  background-color:#0d6efdb8;
-  border-color: #0d6efdb8;
+  background-color: #50adad;
+  border-color: #50adad;
   color: white;
 }
 
@@ -45,13 +51,13 @@ input, button, select {
 }
 
 .form-control:focus, .form-select:focus {
-  color:#0d6efdb8;
+  color: #2a6b6b;
   background-color: #fff;
   border: solid;
   outline-width: 2px;
-  border-color: #0d6efdb8;
+  border-color: #50adad;
   border-width: thin;
-  outline-color:  #0d6efdb8;
+  outline-color:  #50adad;
   outline-style: revert;
   box-shadow: none;
 }

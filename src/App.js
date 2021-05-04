@@ -142,7 +142,7 @@ class App extends Component {
             <input className="form-control p-3" placeholder="city name, state code, country code (ISO)" onChange={event => this.setState({city: event.target.value})}/>
           </div>
           <div className="d-flex m-3 mt-4 align-items-center">
-            <span className="m-3 p-3 font-lg fw-bold">I prefer</span>
+            <span className="m-3 font-lg fw-bold">I prefer</span>
             <SelectUnits changeUnits={this.changeUnits}/>
           </div> 
         </div>
