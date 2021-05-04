@@ -1,20 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@200&family=DM+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
+
 
 body {
   color: black;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
 }
 
 input, button, select {
   color: black;
   text-align: center;
-}
-
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline-color: #0d6efdb8;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .form-select {
@@ -27,10 +23,6 @@ button:focus {
 
 .bg-color {
   background-color: #0d6efd0d;
-}
-
-.bg-white {
-  background-color: white;
 }
 
 .btn-lg {
@@ -47,25 +39,43 @@ button:focus {
   font-size: 1rem;
 }
 
-.form-control:focus {
-  color: #212529;
+.card {
+  background-color: white;
+  box-shadow: 8px 8px 8px #0404041c;
+}
+
+.form-control:focus, .form-select:focus {
+  color:#0d6efdb8;
   background-color: #fff;
+  border: solid;
+  outline-width: 2px;
   border-color: #0d6efdb8;
-  outline: 0;
-  box-shadow: 0 0 0 0.25rem #0d6efd2b;
+  border-width: thin;
+  outline-color:  #0d6efdb8;
+  outline-style: revert;
+  box-shadow: none;
 }
 
 .table {
   margin-bottom: 0;
 }
 
-div.card {
-  padding-left: 3rem;
-}
-
 td {
   vertical-align: middle;
   }
+
+img {
+  width: 2rem;
+}
+
+.margin {
+  margin: 4rem!important
+}
+
+.padding {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
 
 @media only screen and (max-width: 425px) {
   input::placeholder {
@@ -77,7 +87,11 @@ td {
   .table>:not(caption)>*>* {
     padding: .3rem .3rem;
   }
-  div.card {
-    padding-left: 1.5rem;
+  .margin {
+    margin: 2rem!important
+  }
+  .padding {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }

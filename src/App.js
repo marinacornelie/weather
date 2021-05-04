@@ -43,7 +43,8 @@ class App extends Component {
     axios.get('https://api.openweathermap.org/data/2.5/weather?q=' + this.state.city + '&units=' + this.state.units + '&appid=' + apiKey)
     .then(response => {
       this.setState({
-        weatherInfo: response.data
+        weatherInfo: response.data,
+        timezone: response.data.timezone + new Date().getTimezoneOffset()*60
       }) 
     })
     .catch((error) => {
@@ -54,12 +55,17 @@ class App extends Component {
  showWeather = () => {
     if (this.state.weatherInfo) {
       return (
-        <div className="d-flex flex-column bg-white p-2">
-          <div className="m-2">{this.state.weatherInfo.main.temp}°</div>
-          <div className="m-2 d-flex flex-row align-items-center">
-            <div>{this.state.weatherInfo.weather[0].description}</div>
-            <img src={`http://openweathermap.org/img/w/${this.state.weatherInfo.weather[0].icon}.png`} alt="icon weather" />
-          </div>
+        <div className="d-flex flex-column card p-2">
+          <table className="table table-borderless ms-2">
+            <tbody>
+              <tr>
+                <td className="text-start">{this.formatTime(this.state.weatherInfo.dt)}</td> 
+                <td className="text-start">{this.state.weatherInfo.main.temp}°</td>
+                <td className="text-end">{this.showIcon(this.state.weatherInfo.weather[0].icon)}</td>
+                <td className="text-start">{this.state.weatherInfo.weather[0].description}</td>               
+              </tr>
+            </tbody>
+          </table>
         </div>
       )
     }   
@@ -136,7 +142,7 @@ class App extends Component {
             <input className="form-control p-3" placeholder="city name, state code, country code (ISO)" onChange={event => this.setState({city: event.target.value})}/>
           </div>
           <div className="d-flex m-3 mt-4 align-items-center">
-            <span className="m-2 font-lg">I prefer</span>
+            <span className="m-3 p-3 font-lg fw-bold">I prefer</span>
             <SelectUnits changeUnits={this.changeUnits}/>
           </div> 
         </div>
@@ -148,16 +154,16 @@ class App extends Component {
           <div className="m-3 p-2 font-lg">{this.showWeather()} {this.state.errorMessage}</div>
           <div>
             {this.state.forecastInfo.map((itemList, index) => ( 
-              <div key={index} className="card m-3">
+              <div key={index} className="card margin padding text-center pb-4">
                 <span className="mt-4 mb-4 font-lg fw-bold">{this.formatDate(itemList[0])}</span>
-                <table className="table table-borderless font-df">
+                <table className="table table-borderless ms-2">
                 {itemList.map((item) => (
                   <tbody>
                     <tr key={item.dt}>
-                      <td>{this.formatTime(item.dt)}</td>
-                      <td>{item.main.temp}°</td>
-                      <td>{this.showIcon(item.weather[0].icon)}</td>
-                      <td>{item.weather[0].description}</td>
+                      <td className="text-start">{this.formatTime(item.dt)}</td> 
+                      <td className="text-start">{item.main.temp}°</td>
+                      <td className="text-end">{this.showIcon(item.weather[0].icon)}</td>
+                      <td className="text-start">{item.weather[0].description}</td>               
                     </tr>
                   </tbody>
                 ))}    
